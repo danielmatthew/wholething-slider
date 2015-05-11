@@ -1,8 +1,12 @@
 /// <reference path="typings/jquery/jquery.d.ts"/>
+
+$(document).ready(function() {
+  
+
 // Breakpoints object - could feed this as argument to function
 var breakpoints = {
   col1: "(max-width: 25.249em)",
-  col2: "(min-width: 25.25em)",
+  col2: "(min-width: 25.25em) and (max-width: 50.49em)",
   col3: "(min-width: 50.5em)"
 };
 
@@ -14,11 +18,13 @@ var featureClasses = {
   col1: $feature.data('col1'),
   col2: $feature.data('col2'),
   col3: $feature.data('col3'),
-  col4: $feature.data('col4'),
+  col4: $feature.data('col4')
 };
 
 // Clone feature before slider is initialised
 var $cloned = $feature.clone();
+$cloned.removeClass(featureClasses.col1).addClass(featureClasses.col2);
+console.log($cloned);
 
 // Regular expression
 var re = /(feature-layout--[A-z]*)/g;
@@ -30,6 +36,7 @@ enquire
       $feature
         .removeClass(featureClasses.col2, featureClasses.col3)
         .addClass(featureClasses.col1);
+        
     },
     unmatch: function() {
       $feature.removeClass(featureClasses.col1);
@@ -40,7 +47,7 @@ enquire
     match: function() {
       $feature
         .removeClass(featureClasses.col1, featureClasses.col3)
-        .addClass(featureClasses.col2);
+        .addClass('feature-layout--grid');
     },
     unmatch: function() {
       $feature.removeClass(featureClasses.col2);
@@ -52,12 +59,13 @@ enquire
       $feature
         .removeClass(featureClasses.col1, featureClasses.col2, featureClasses.col4)
         .addClass(featureClasses.col3)
+        .removeClass('feature-layout--grid')
         .tbaSlider();
     },
     unmatch: function() {
       $feature.destroy();
-      $feature.replaceWith(this.cloned);
       $feature.removeClass(featureClasses.col3);
+      $feature.replaceWith($feature);
     }
   });
 
@@ -67,3 +75,5 @@ var replaceClasses = function() {
     return c.replace(re, '');
   });   
 };
+
+});
