@@ -1,9 +1,11 @@
 /*
- * tbaSlider - Version 2.0
+ * tbaSlider - Version 2.3
  * June 14, 2012 - Developed structure with much of the functionality not working.
  *                 Further functionaly to be added in later versions.
  *
  * Sept 12, 2013 - Added coins, numbers, play, pause, next, and previous functionality.
+ *
+ * May 11, 2015 - Added destroy() method; next and prev buttons transition instantly - Dan Matthew
  *
  * This jQuery plugin and its content is copyright of Wholething Ltd,
  * 5 Jupiter House, Calleva Park, Aldermaston, Reading, Berkshire, RG7 8NN
@@ -48,6 +50,7 @@
         'titleDescriptionOutSpeed': 500,    // speed of title/description transition out
         'titleDescriptionTransition': 'fade'// type of title/description transition
       }, {
+        'transition': self.attr("data-transition"),
         'speed': self.attr("data-speed"),
         'delay': self.attr("data-delay"),
         'startSlide': self.attr("data-startSlide"),
@@ -98,7 +101,7 @@
         // handle links click (could be coin, thumb, or number)
         self.initLinks();
         
-        // creates timeouts array
+        // creates timeouts array - easier way to clear all when we .destroy
         self.timeouts = [];
 
         // if auto start is set, run the play function
@@ -237,18 +240,39 @@
         // ensure we have enabled this feature
         if (!self.settings.showNextPrev) return;
 
-        var html = '<div class="next-prev"><div class="next" ></div><div class="prev" ></div></div>';
+        var html = '<div class="next-prev"><div id="nextBtn" class="next" ></div><div id="prevBtn" class="prev" ></div></div>';
         self.$content.append(html);
         self.$nextPrev = self.find('.next-prev');
-        self.$next = self.find('.next-prev .next');
+        self.$next = $('#nextBtn');
+        self.$prev = $('#prevBtn');
+        
+        if (self.$nextPrev.css('opacity') == 1) {
+          self.$content
+            .mouseenter(function() {
+              self.$nextPrev.fadeIn();
+            })
+            .mouseleave(function() {
+              self.$nextPrev.fadeOut();
+            });          
+        } else {
+          self.$content
+            .mouseenter(function() {
+              self.$nextPrev.fadeOut();
+            })
+            .mouseleave(function() {
+              self.$nextPrev.fadeIn();
+            });           
+        }
+
+        
         self.$next.click(function () {
           self.stop();
-          self.GoToSlide(self.nextSlideNumber());
+          self.GoToSlide(self.nextSlideNumber(), true);
         });
-        self.$prev = self.find('.next-prev .next');
+
         self.$prev.click(function () {
           self.stop();
-          self.GoToSlide(self.prevSlideNumber());
+          self.GoToSlide(self.prevSlideNumber(), true);
         });
       };
 
@@ -370,8 +394,12 @@
         // Remove inline styles
         self.$slides.removeAttr('style');
         if (self.inTransistion = true) {
-          self.$slides.css({'display': 'block', 'z-index': '1'});
+          self.$slides.css({'display': 'block', 'z-index': '1', 'opacity': '1'});
         }
+        
+        // Kill controls
+        $('.controls').remove();
+        $('.next-prev').remove();
         
       };
 
@@ -391,10 +419,3 @@
     }
   };
 })(jQuery);
-
-// On document read
-$(document).ready(function () {
-  /* find all layout--slideshow */
-  // $('.feature-layout--slideshow').tbaSlider();
-});
-

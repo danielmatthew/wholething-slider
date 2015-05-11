@@ -455,12 +455,14 @@ p {
   border: 0;
   padding: 0; }
 
+.feature__diy p {
+  text-align: justify; }
+
 p.description {
-  display: none;
-  font-size: 22px;
-  font-size: 1.375rem;
-  line-height: 28px;
-  line-height: 1.75rem;
+  font-size: 18px;
+  font-size: 1.125rem;
+  line-height: 18px;
+  line-height: 1.125rem;
   margin: 0px 0px 8px 0px;
   margin: 0rem 0rem 0.5rem 0rem;
   border: 0;
@@ -468,12 +470,12 @@ p.description {
   font-family: "proxima-nova-sc-osf", Geneva, sans-serif;
   font-weight: 300;
   padding: 0;
-  text-align: center;
-  width: 50%;
-  margin: 0 auto; }
+  text-align: center; }
+
+.content__header--traverse p.description {
+  display: none; }
 
 a {
-  border-bottom: dotted 1px transparent;
   color: #999;
   text-decoration: none; }
   a:visited {
@@ -530,12 +532,12 @@ h1, h2, h3, h4 {
     color: #0e77a8; }
 
 h1 {
-  font-size: 28px;
-  font-size: 1.75rem;
-  line-height: 28px;
-  line-height: 1.75rem;
-  margin: 16px 0px;
-  margin: 1rem 0rem;
+  font-size: 24px;
+  font-size: 1.5rem;
+  line-height: 24px;
+  line-height: 1.5rem;
+  margin: 0px 0px 8px 0px;
+  margin: 0rem 0rem 0.5rem 0rem;
   border: 0;
   font-family: "proxima-nova-sc-osf", Geneva, sans-serif;
   font-weight: 300;
@@ -543,12 +545,12 @@ h1 {
   text-align: center; }
 
 h2 {
-  font-size: 24px;
-  font-size: 1.5rem;
-  line-height: 24px;
-  line-height: 1.5rem;
-  margin: 16px 0px;
-  margin: 1rem 0rem;
+  font-size: 20px;
+  font-size: 1.25rem;
+  line-height: 20px;
+  line-height: 1.25rem;
+  margin: 0px 0px 16px 0px;
+  margin: 0rem 0rem 1rem 0rem;
   border: 0;
   font-family: "proxima-nova-sc-osf", Geneva, sans-serif;
   font-weight: 300;
@@ -632,7 +634,7 @@ layout\_layout_screen.scss
 
 /*
 -------------------------------
-  Contains elements that scroll
+	Contains elements that scroll
 -------------------------------
 */
 .screen--scrolling {
@@ -644,9 +646,13 @@ layout\_layout_screen.scss
 .screen__header-content {
   padding: 0 0 80px 0; }
 
+.screen__content {
+  margin-top: 16px;
+  margin-top: 1rem; }
+
 /*
 -------------------------------------
-  Contains elements that don't scroll
+	Contains elements that don't scroll
 -------------------------------------
 */
 .screen__footer--sticky {
@@ -674,8 +680,15 @@ layout\_layout_page.scss
   margin-bottom: 16px;
   margin-bottom: 1rem; }
 
-.page.content__header {
-  border-bottom: 1px solid #ddd; }
+/*
+========================
+Traverse Top is position: relative to allow .content__header to be
+position: absolute; on certain page where the Page Title is hidden
+behind the traverse content
+========================
+*/
+.page__traverse--top {
+  position: relative; }
 
 @media only screen and (min-width: 75.25em) {
   .page--content.layout__group--table-rtl {
@@ -749,16 +762,36 @@ layout\_layout_content.scss
 */
 /*
 ------------------------
-  TRAVERSE
+	TRAVERSE
 ------------------------
 */
+/*
+========================
+When a Traverse Feature exists:
+	1. The Header in the Middle Area is removed by ASP
+	2. The Header is the Traverse Area is added by ASP
+
+Therefore we need to hide the Header in the Traverse Area on the following pages.
+========================
+*/
+#PageID58 .page__traverse--top .content__header--traverse, #PageID34 .page__traverse--top .content__header--traverse, #PageID12 .page__traverse--top .content__header--traverse, #PageID35 .page__traverse--top .content__header--traverse, #PageID52 .page__traverse--top .content__header--traverse, #PageID25 .page__traverse--top .content__header--traverse, #PageID1 .page__traverse--top .content__header--traverse {
+  position: absolute;
+  top: 1rem;
+  left: 0;
+  width: 100%;
+  z-index: -1000; }
+
 .page__primary > .content__traverse {
   padding: 0px 16px;
   padding: 0rem 1rem; }
 
+.content__traverse--bottom {
+  border-top: 1px #ddd solid;
+  padding-top: 1rem; }
+
 /*
 ------------------------
-  CONTAINER FOR MAIN + ASIDE 
+	CONTAINER FOR MAIN + ASIDE 
 ------------------------
 */
 .page__primary > .content__main-aside.layout__group--table-ltr {
@@ -773,7 +806,7 @@ layout\_layout_content.scss
 .page__primary > .content__main-aside .main {
   /*
   ------------------------
-    MAIN WITHIN CONTAINER FOR MAIN + ASIDE
+  	MAIN WITHIN CONTAINER FOR MAIN + ASIDE
   ------------------------
   */ }
   @media only screen and (min-width: 50.5em) {
@@ -788,7 +821,7 @@ layout\_layout_content.scss
 
 /*
 ------------------------
-  SIDEBAR WITHIN CONTAINER FOR MAIN + ASIDE
+	SIDEBAR WITHIN CONTAINER FOR MAIN + ASIDE
 ------------------------
 */
 @media only screen and (min-width: 50.5em) {
@@ -809,7 +842,7 @@ layout\_layout_content.scss
 
 /*
 ------------------------
-  SIDEBAR WITHIN SECONDARY CONTAINER
+	SIDEBAR WITHIN SECONDARY CONTAINER
 ------------------------
 */
 .page__secondary > .content__sidebar {
@@ -890,16 +923,35 @@ layout\_layout_footer.scss
       text-align: right; } }
 
 .feature-layout--bar .feature-layout__group {
-  display: table;
-  border-collapse: collapse;
-  border-spacing: 0;
-  table-layout: fixed;
+  margin: 0;
   padding: 0;
-  margin: 0 auto;
-  width: 98%; }
+  display: -webkit-box;
+  /* OLD - iOS 6-, Safari 3.1-6 */
+  display: -moz-box;
+  /* OLD - Firefox 19- (buggy but mostly works) */
+  display: -ms-flexbox;
+  /* TWEENER - IE 10 */
+  display: -webkit-flex;
+  /* NEW - Chrome */
+  display: flex;
+  flex-wrap: wrap;
+  -webkit-justify-content: space-between;
+  justify-content: space-between;
+  list-style: none; }
   .feature-layout--bar .feature-layout__group .feature-layout__item {
-    display: table-cell;
-    border-collapse: collapse;
+    display: -webkit-box;
+    /* OLD - iOS 6-, Safari 3.1-6 */
+    display: -moz-box;
+    /* OLD - Firefox 19- (buggy but mostly works) */
+    display: -ms-flexbox;
+    /* TWEENER - IE 10 */
+    display: -webkit-flex;
+    /* NEW - Chrome */
+    display: flex;
+    -webkit-box-align: start;
+    -webkit-align-items: flex-start;
+    -ms-flex-align: start;
+    align-items: flex-start;
     margin: 0;
     padding: 0; }
 
@@ -1098,7 +1150,7 @@ features_global/_nav_global_top.scss
 =====================================
 */
 .feature.feature__menu {
-  padding: 0;
+  padding: 0 16px;
   margin-bottom: 0; }
   .feature.feature__menu .feature__header {
     border: 0;
@@ -1123,14 +1175,13 @@ features_global/_nav_global_top.scss
         outline: none;
         width: auto; }
   .feature.feature__menu [data-feature__element="url"] {
-    margin: 0px 2px;
-    margin: 0rem 0.125rem;
     padding: 16px 0px;
     padding: 1rem 0rem;
     font-family: "proxima-nova-sc-osf", Geneva, sans-serif;
     border: 0;
     color: #999;
     display: block;
+    margin: 0;
     text-align: center; }
     .feature.feature__menu [data-feature__element="url"]:hover, .feature.feature__menu [data-feature__element="url"].ancestor {
       color: #8bb8ef; }
@@ -1178,12 +1229,12 @@ features_global/_nav_global_bottom.scss
 
 /*
 ===================================
-  features_local\_feature_master.scss
+	features_local\_feature_master.scss
 ===================================
 */
 /*
 -----------------------------------
-  FEATURE
+	FEATURE
 -----------------------------------
 */
 .feature {
@@ -1193,12 +1244,12 @@ features_global/_nav_global_bottom.scss
 
 /*
 -----------------------------------
-  FEATURE HEADER
+	FEATURE HEADER
 -----------------------------------
 */
 /*
 -----------------------------------
-  FEATURE TITLE
+	FEATURE TITLE
 -----------------------------------
 */
 h2[data-feature="title"] {
@@ -1214,7 +1265,7 @@ aside h2[data-feature="title"] {
 
 /*
 -----------------------------------
-  FEATURE DESCRIPTION
+	FEATURE DESCRIPTION
 -----------------------------------
 */
 [data-feature="description"] {
@@ -1224,7 +1275,7 @@ aside h2[data-feature="title"] {
 
 /*
 -----------------------------------
-  FEATURE CONTENT
+	FEATURE CONTENT
 -----------------------------------
 */
 [data-feature__element="short-title url"],
@@ -1249,7 +1300,7 @@ aside h2[data-feature="title"] {
 [data-feature__element="description"] {
   border: 0;
   color: #999;
-  display: block;
+  display: none;
   min-height: 80px;
   min-height: 5rem;
   text-align: center; }
@@ -1279,6 +1330,10 @@ aside h2[data-feature="title"] {
   border: 0;
   display: block;
   text-align: left; }
+.sidebar__inner [data-feature="nav"] [data-feature__element="short-title url"],
+.sidebar__inner [data-feature="nav"] [data-feature__element="short-title"] [data-feature__element="url"] {
+  padding: 0px 0px 16px 0px;
+  padding: 0rem 0rem 1rem 0rem; }
 .sidebar__inner [data-feature__element="description"] {
   padding: 8px;
   padding: 0.5rem;
@@ -1288,7 +1343,7 @@ aside h2[data-feature="title"] {
 
 /*
 -----------------------------------
-  FEATURE FOOTER
+	FEATURE FOOTER
 -----------------------------------
 */
 .feature__footer {
@@ -1297,7 +1352,7 @@ aside h2[data-feature="title"] {
 
 /*
 -----------------------------------
-  FEATURE SUMMARY
+	FEATURE SUMMARY
 -----------------------------------
 */
 [data-feature="summary"] {
@@ -1376,7 +1431,7 @@ features_local\_layout_master.scss
 */
 /*
 -----------------------------------------
-  Hide left nav for specific sections
+	Hide left nav for specific sections
 -----------------------------------------
 */
 .AncestorID12 [data-feature="nav"], .AncestorID35 [data-feature="nav"], .AncestorID52 [data-feature="nav"], .AncestorID53 [data-feature="nav"] {
@@ -1384,12 +1439,37 @@ features_local\_layout_master.scss
 
 /*
 -----------------------------------
-  STATE STYLES
+	STATE STYLES
 -----------------------------------
 */
+[data-feature="nav"] [data-feature__element="short-title url"].current,
+[data-feature="nav"] [data-feature__element="short-title url"].ancestor {
+  color: #8bb8ef; }
+  .AncestorID58 [data-feature="nav"] [data-feature__element="short-title url"].current, .AncestorID58
+  [data-feature="nav"] [data-feature__element="short-title url"].ancestor {
+    color: #eb4c98; }
+  .AncestorID34 [data-feature="nav"] [data-feature__element="short-title url"].current, .AncestorID34
+  [data-feature="nav"] [data-feature__element="short-title url"].ancestor {
+    color: #00b2c0; }
+  .AncestorID12 [data-feature="nav"] [data-feature__element="short-title url"].current, .AncestorID12
+  [data-feature="nav"] [data-feature__element="short-title url"].ancestor {
+    color: #8880d3; }
+  .AncestorID35 [data-feature="nav"] [data-feature__element="short-title url"].current, .AncestorID35
+  [data-feature="nav"] [data-feature__element="short-title url"].ancestor {
+    color: #8dcf69; }
+  .AncestorID52 [data-feature="nav"] [data-feature__element="short-title url"].current, .AncestorID52
+  [data-feature="nav"] [data-feature__element="short-title url"].ancestor {
+    color: #af5fc0; }
+  .AncestorID25 [data-feature="nav"] [data-feature__element="short-title url"].current, .AncestorID25
+  [data-feature="nav"] [data-feature__element="short-title url"].ancestor {
+    color: #e07e27; }
+  .AncestorID26 [data-feature="nav"] [data-feature__element="short-title url"].current, .AncestorID26
+  [data-feature="nav"] [data-feature__element="short-title url"].ancestor {
+    color: #0e77a8; }
+
 /*
 -----------------------------------
-  LEVEL STYLES
+	LEVEL STYLES
 -----------------------------------
 */
 [data-feature__item="nav-link level-4"] [data-feature__element="short-title url"] {
@@ -1712,9 +1792,9 @@ features_local\_layout_images.scss
     border: 0;
     padding: 0; }
   .feature__images .controls .playpause .play {
-    background: transparent url("/_templates/basic034/images/play.png") no-repeat scroll left top; }
+    background: transparent url("/_templates/basic038/images/play.png") no-repeat scroll left top; }
   .feature__images .controls .playpause .pause {
-    background: transparent url("/_templates/basic034/images/pause.png") no-repeat scroll left top; }
+    background: transparent url("/_templates/basic038/images/pause.png") no-repeat scroll left top; }
   .feature__images .next-prev {
     position: absolute;
     top: 50%;
@@ -1729,7 +1809,7 @@ features_local\_layout_images.scss
     position: absolute;
     z-index: 12;
     right: 0px;
-    background: #fff url(/_templates/basic034/images/chevron-right.png) 50% 50% no-repeat; }
+    background: rgba(255, 255, 255, 0.5) url(/_templates/basic038/images/chevron-right.png) 50% 50% no-repeat; }
   .feature__images .next-prev .prev {
     cursor: pointer;
     width: 36px;
@@ -1737,6 +1817,17 @@ features_local\_layout_images.scss
     position: absolute;
     left: 0px;
     z-index: 12;
-    background: #fff url("/_templates/basic034/images/chevron-left.png") 50% 50% no-repeat; }
+    background: rgba(255, 255, 255, 0.5) url("/_templates/basic038/images/chevron-left.png") 50% 50% no-repeat; }
+    
+    div#nextBtn {
+  width: 50px;
+  height: 50px;
+  background-color: blue;
+  color: white;
+}
 
-/*# sourceMappingURL=marcus_barnett_01.css.map */
+div#prevBtn {
+  height: 50px;
+  width: 50px;
+  background-color: red;
+}
