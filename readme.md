@@ -18,6 +18,7 @@
 - Reference [enquire.js](//cdnjs.cloudflare.com/ajax/libs/enquire.js/2.1.2/enquire.min.js") in document head
 - Confirm breakpoints in slideshow
 - Confirm element to be 'watched'
+- Add data attributes to desired feature: `data-[col1 | col2 | col3 | col4]="feature-layout--xxx`
 - Reference slideshow_js at end of template
 
 
