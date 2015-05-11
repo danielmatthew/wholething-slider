@@ -97,6 +97,9 @@
 
         // handle links click (could be coin, thumb, or number)
         self.initLinks();
+        
+        // creates timeouts array
+        self.timeouts = [];
 
         // if auto start is set, run the play function
         if (self.settings.autoStart == true) self.play();
@@ -322,12 +325,12 @@
 
       // play next slide and loop while isPlaying is true
       self.loopToNext = function () {
-        setTimeout(function () {
+        self.timeouts.push(setTimeout(function () {
           if (self.isPlaying) {
             self.GoToSlide(self.nextSlideNumber());
             self.loopToNext();
           }
-        }, self.settings.delay);
+        }, self.settings.delay));
       };
 
       // Play
@@ -359,6 +362,9 @@
 
       // Destroy
       self.destroy = function() {
+        for (var index = 0; index < self.timeouts.length; index++) {
+          clearTimeout(self.timeouts[index]);
+        }
         // Stop slider
         self.isPlaying = false;
         // Remove inline styles

@@ -53,12 +53,14 @@ enquire
 // Col3
 .register("(min-width: 50.5em)", {
   match: function() {
-    $feature.removeClass(featureClasses.col1, featureClasses.col2);
+    console.log('Col3 matched!');
+    $feature.removeClass(featureClasses.col1, featureClasses.col2, featureClasses.col4);
     $feature.addClass(featureClasses.col3);
     $feature.tbaSlider();
   },
   unmatch: function() {
     $feature.destroy();
+    $feature.replaceWith(this.cloned);
     $feature.removeClass(featureClasses.col3);
   }
 });
