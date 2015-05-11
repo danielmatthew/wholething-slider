@@ -21,6 +21,6 @@
 - Reference slideshow_js at end of template
 
 
-## To do (if desired)
-- [] allow breakpoints to be configured in function argument
-- [] allow element to be specified in function argument   
+## To do (if desired??)
+- [ ] allow breakpoints to be configured in function argument
+- [ ] allow element to be specified in function argument   
