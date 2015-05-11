@@ -1,0 +1,14 @@
+{
+  "name": "deanaaaaaaa",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "watch": "livereload . -i 200"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "livereload": "^0.3.7"
+  }
+}
