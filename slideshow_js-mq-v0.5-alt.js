@@ -9,7 +9,9 @@ var breakpoints = {
 };
 
 // Our DOM element to modify - could feed this as argument to function
-var $feature = $('#feature-grid');
+var $feature = $('[data-feature__id~="76"][data-feature__id~="72"], [data-feature__id~="66"][data-feature__id~="72"]');
+
+console.log($feature);
 
 // Store the classes to be assigned for each column
 var featureClasses = {
